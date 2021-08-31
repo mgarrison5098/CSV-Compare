@@ -1,6 +1,29 @@
+val_map = [
+                [0,1,2,3,4,5,6,7],
+                [8,9,10,11,12,13,14,15],
+                [16,17,18,19,20,21,22,23],
+                [24,25,26,27,28,29,30,31],
+                [32,33,34,35,36,37,38,39],
+                [40,41,42,43,44,45,46,47],
+                [48,49,50,51,52,53,54,55],
+                [56,57,58,59,60,61,62,63]
+            ]
 
 def byteIndex(start,length):
-    start_index = start // 8
-    end_index = (start + length) // 8
+    start_cord = get_coordinates(start)
+    if len(start_cord) == 2:
+        rem = length - (start_cord[0] + 1)
+        count = start_cord[1]
+        while rem > 0:
+            count += 1
+            rem = rem - 8
+        return(start_cord[1],count)
+    
 
-    return(start_index,end_index)
+    
+def get_coordinates(number):
+    for i in range(len(val_map)):
+        if number in val_map[i]:
+            y = i
+            x = val_map[i].index(number)
+    return x, y
