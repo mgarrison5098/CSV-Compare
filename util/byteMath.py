@@ -1,7 +1,11 @@
 
-def byteMath(bytes, start, end, order, sign):
-    int.from_bytes(b'\x0F\xF9', byteorder=order, signed=sign)
+def byteMath(byte_arr, start, end, order, sign):
+    return int.from_bytes(getByteString(byte_arr, start, end), byteorder=order, signed=sign)
 
-def getByteString(bytes, start, end):
+
+def getByteString(byte_arr, start, end):
     b_str = ""
-    print(int.from_bytes(b'\x0F\xFE', byteorder="big", signed=True))
+    for byte in range(start, end+1):
+        b_str += byte_arr[byte]
+        
+    return bytes.fromhex(b_str)
