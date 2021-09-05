@@ -1,11 +1,13 @@
 import sys, getopt
 import csv
+from util.dedupe import dedupe_arr
 from util.configTests import configTests
 from util.byteMath import byteMath
 from util.parseMessage import parseMessage
 
 test_arr = []
 pass_arr = []
+fail_arr = []
 
 
 def main(argv):
@@ -24,7 +26,9 @@ def main(argv):
         elif opt in ("-d"):
             dataFile = arg
         elif opt in ("-t"):
-            ag = [{"min_num": 0,"max_num": 20,"start": 2,"length": 22,"factor": 1.5},{"min_num": -500,"max_num": 500,"start": 0,"length": 12,"factor": .00075}]
+            ag = [{"min_num": 0,"max_num": 2,"start": 6,"length": 2,"factor": 1},{"min_num": 0,"max_num": 163.8,"start": 8,"length": 13,"factor": .02}]
+            # ag = [{"min_num": -500,"max_num": 500,"start": 3,"length": 12,"factor": 1.5},{"min_num": -2000,"max_num": 2000,"start": 35,"length": 12,"factor": 1}]
+            
             temp_arr = configTests(ag)
             for i in temp_arr:
                 test_arr.append(i)
@@ -34,7 +38,7 @@ def main(argv):
         for row in csv_reader:
             runTest(row[1],row[3])
     
-    print(pass_arr)
+    print(dedupe_arr(pass_arr, fail_arr))
     
     
 def runTest(id, data):
@@ -42,9 +46,10 @@ def runTest(id, data):
         byte_int = byteMath(parseMessage(data), test_arr[t]['indexes'][0], test_arr[t]['indexes'][1], 'big', 1)
         byte_int = byte_int * test_arr[t]['factor']
         if byte_int <= test_arr[t]['max_num'] and byte_int >= test_arr[t]['min_num']:
-            pass_arr.append([id, data])
-        # else:
-        #     print(id,data)
+            # pass_arr.append([id, data])
+            pass_arr.append(id)
+        else:
+            fail_arr.append(id)
     
     
 
