@@ -8,6 +8,7 @@ from util.parseMessage import parseMessage
 test_arr        = []
 pass_arr        = []
 pass_obj_arr    = []
+fail_obj_arr    = []
 fail_arr        = []
 
 
@@ -27,9 +28,15 @@ def main(argv):
         elif opt in ("-d"):
             dataFile = arg
         elif opt in ("-t"):
-            ag = [{"min_num": 0,"max_num": 2,"start": 6,"length": 2,"factor": 1},{"min_num": 0,"max_num": 163.8,"start": 8,"length": 13,"factor": .02}]
-            # ag = [{"min_num": -500,"max_num": 500,"start": 3,"length": 12,"factor": 1.5},{"min_num": -2000,"max_num": 2000,"start": 35,"length": 12,"factor": 1}]
-            
+            # ag = [{"min_num": 0,"max_num": 2,"start": 6,"length": 2,"factor": 1},{"min_num": 0,"max_num": 163.8,"start": 8,"length": 13,"factor": .02}]
+            # ag = [{"min_num": 0,"max_num": 250,"start": 47,"length": 16,"factor": 0.01}]
+            ag = [
+                {"min_num": 0,"max_num": 1,"start": 0,"length": 1,"factor": 1},
+                {"min_num": -32768,"max_num": 32767,"start": 15,"length": 16,"factor": 1},
+                {"min_num": -500,"max_num": 500,"start": 31,"length": 16,"factor": 0.0573},
+                {"min_num": -20000,"max_num": 20000,"start": 47,"length": 16,"factor": 0.73},
+                {"min_num": 0,"max_num": 255,"start": 63,"length": 8,"factor": 1}
+            ]
             temp_arr = configTests(ag)
             for i in temp_arr:
                 test_arr.append(i)
@@ -39,7 +46,7 @@ def main(argv):
         for row in csv_reader:
             runTest(row[1],row[3])
     
-    print(dedupe_arr(pass_arr, fail_arr, pass_obj_arr))
+    print(dedupe_arr(pass_arr, fail_arr, pass_obj_arr, fail_obj_arr))
     
     
 def runTest(id, data):
@@ -51,11 +58,16 @@ def runTest(id, data):
             pass_arr.append(id)
             pass_obj_arr.append({
                 'id':id,
+                'test_num': t,
                 'result': byte_int
             })
         else:
             fail_arr.append(id)
-    
+            fail_obj_arr.append({
+                'id':id,
+                'test_num': t,
+                'result': byte_int
+            })
     
 
 
