@@ -18,19 +18,27 @@ def dedupe_arr(pass_arr, fail_arr, pass_obj_arr):
     export_arr = []
 
     for key in pass_ct.keys():
+        tmp_list = [element['result'] for element in pass_obj_arr if element['id'] == key]
+        max_val = max(tmp_list)
+        min_val = min(tmp_list)
+
         if key in fail_ct.keys():
             export_arr.append({
                 'id': key,
                 'pass_count': list(pass_ct.values())[list(pass_ct.keys()).index(key)],
-                'fail_count': list(fail_ct.values())[list(fail_ct.keys()).index(key)]
+                'fail_count': list(fail_ct.values())[list(fail_ct.keys()).index(key)],
+                'min_val': min_val,
+                'max_val': max_val
             })
         else:
           export_arr.append({
                 'id': key,
                 'pass_count': list(pass_ct.values())[list(pass_ct.keys()).index(key)],
-                'fail_count': '0'
+                'fail_count': '0',
+                'min_val': min_val,
+                'max_val': max_val
             }) 
-    
+
     return export_arr
 # list(myl.keys())[list(myl.values()).index(16)]
 
