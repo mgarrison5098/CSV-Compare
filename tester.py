@@ -5,9 +5,10 @@ from util.configTests import configTests
 from util.byteMath import byteMath
 from util.parseMessage import parseMessage
 
-test_arr = []
-pass_arr = []
-fail_arr = []
+test_arr        = []
+pass_arr        = []
+pass_obj_arr    = []
+fail_arr        = []
 
 
 def main(argv):
@@ -38,7 +39,7 @@ def main(argv):
         for row in csv_reader:
             runTest(row[1],row[3])
     
-    print(dedupe_arr(pass_arr, fail_arr))
+    print(dedupe_arr(pass_arr, fail_arr, pass_obj_arr))
     
     
 def runTest(id, data):
@@ -48,6 +49,10 @@ def runTest(id, data):
         if byte_int <= test_arr[t]['max_num'] and byte_int >= test_arr[t]['min_num']:
             # pass_arr.append([id, data])
             pass_arr.append(id)
+            pass_obj_arr.append({
+                'id':id,
+                'result': byte_int
+            })
         else:
             fail_arr.append(id)
     
